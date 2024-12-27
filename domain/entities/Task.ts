@@ -9,7 +9,7 @@ export enum TaskStatus {
 export class Task {
   @IsString()
   @IsNotEmpty()
-  protected id: string;
+  public id: string;
   @IsString()
   @IsNotEmpty()
   protected title: string;
@@ -23,6 +23,7 @@ export class Task {
     this.title = title;
     this.description = description;
   }
+
 
   getDescription(): string | undefined {
     return this.description;
