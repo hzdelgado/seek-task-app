@@ -37,14 +37,18 @@ const taskSlice = createSlice({
       })
       .addCase(fetchTasks.fulfilled, (state, action: PayloadAction<Task[]>) => {
         state.loading = false;
-        state.tasks = action.payload;
+        state.tasks = action.payload ?? [];
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Error fetching tasks';
       })
-      .addCase(addTask.fulfilled, (state, action: PayloadAction<Task>) => {
-        state.tasks.push(action.payload);
+      .addCase(addTask.fulfilled, (state, action: PayloadAction<Task | undefined>) => {
+        let newTask = action.payload as Task;
+        state.tasks.push(newTask);
+      })
+      .addCase(addTask.rejected, (state, action) => {
+        console.error(action.payload);
       });
   },
 });
