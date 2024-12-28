@@ -1,6 +1,5 @@
 import { UserImplRepository } from "@/infrastructure/adapters/UserImplRepository";
 import { User } from "@/domain/entities/User";
-import { Either } from "@/shared/Either";
 
 describe("UserImplRepository", () => {
   let userRepository: UserImplRepository;
@@ -11,9 +10,9 @@ describe("UserImplRepository", () => {
     userRepository["users"].push(mockUser);
   });
 
-  describe("login", () => {
-    it("should login successfully with correct credentials", async () => {
-      const result = await userRepository.login("test@example.com", "password123");
+  describe("findByEmail", () => {
+    it("should findByEmail successfully with correct credentials", async () => {
+      const result = await userRepository.findByEmail("test@example.com");
 
       expect(result.isRight()).toBe(true);
       expect(result.getRight()).toEqual(
@@ -21,36 +20,41 @@ describe("UserImplRepository", () => {
           id: "1",
           email: "test@example.com",
           password: "password123",
+          token: ''
         })
       );
     });
 
-    it("should fail to login with incorrect credentials", async () => {
-      const result = await userRepository.login("wrong@example.com", "password123");
+    it("should fail to findByEmail with incorrect credentials", async () => {
+      const result = await userRepository.findByEmail("wrong@example.com");
 
       expect(result.isLeft()).toBe(true);
       expect(result.getLeft()).toBeInstanceOf(Error);
-      expect(result.getLeft()?.message).toBe("Failed to login");
+      expect(result.getLeft()?.message).toBe("User not found");
     });
   });
 
-  describe("logout", () => {
-    it("should logout successfully if the user is logged in", async () => {
-      // Simula un login previo
-      await userRepository.login("test@example.com", "password123");
+  describe("register", () => {
+    it("should register user successfully", async () => {
 
-      const result = await userRepository.logout("1");
+      const result = await userRepository.register({
+        email: "test@example.com",
+        password: "password123"
+      } as User);
 
       expect(result.isRight()).toBe(true);
       expect(result.getRight()).toBe(true);
     });
 
-    it("should fail to logout if the user is not logged in", async () => {
-      const result = await userRepository.logout("1");
+    it("should fail to register if the user already exists", async () => {
+      const result = await userRepository.register({
+        email: "test@example.com",
+        password: "password123"
+      } as User);
 
       expect(result.isLeft()).toBe(true);
       expect(result.getLeft()).toBeInstanceOf(Error);
-      expect(result.getLeft()?.message).toBe("Failed to logout");
+      expect(result.getLeft()?.message).toBe("User already exists");
     });
   });
 });

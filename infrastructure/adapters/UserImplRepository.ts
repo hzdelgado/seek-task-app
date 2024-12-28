@@ -4,29 +4,25 @@ import { Either } from "@/shared/Either";
 
 export class UserImplRepository implements UserRepository {
   private users: User[] = [];
-  private loggedInUsers: Set<string> = new Set();
 
   constructor() {}
 
-  async login(email: string, password: string): Promise<Either<Error, User>> {
-    const user = this.users.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (user) {
-      this.loggedInUsers.add(user.id);
-      return Either.right(user);
+  async findByEmail(email: string): Promise<Either<Error, User>> {
+    const user = this.users.find((u) => u.email === email);
+    if (!user) {
+      return Either.left(new Error("User not found"));
     }
-
-    return Either.left(new Error("Failed to login"));
+    return Either.right(user);
+  }
+  
+  async register(user: User): Promise<Either<Error, User>> {
+    const existingUser = this.users.find((u) => u.email === user.email);
+    if (existingUser) {
+      return Either.left(new Error("User already exists"));
+    }
+    this.users.push(user);
+    return Either.right(user);
   }
 
-  async logout(userId: string): Promise<Either<Error, boolean>> {
-    if (this.loggedInUsers.has(userId)) {
-      this.loggedInUsers.delete(userId);
-      return Either.right(true);
-    }
-
-    return Either.left(new Error("Failed to logout"));
-  }
+  
 }
