@@ -2,7 +2,7 @@ import { Task } from "@/domain/entities/Task";
 import { PartialTask, TaskRepository } from "@/domain/ports/TaskRepository";
 import { Either } from "@/shared/Either";
 
-const simulatedTasks = require('../../data/tasks_data.json');
+const simulatedTasks = require('@/data/tasks.json');
 
 export class TaskImplRepository implements TaskRepository {
     getTaskById(taskId: string): Promise<Either<Error, Task>> {
