@@ -1,5 +1,6 @@
 import { UserImplRepository } from "@/infrastructure/adapters/UserImplRepository";
 import { User } from "@/domain/entities/User";
+import { plainToInstance } from "class-transformer";
 
 describe("UserImplRepository", () => {
   let userRepository: UserImplRepository;
@@ -19,8 +20,7 @@ describe("UserImplRepository", () => {
         expect.objectContaining({
           id: "1",
           email: "test@example.com",
-          password: "password123",
-          token: ''
+          password: "password123"
         })
       );
     });
@@ -38,12 +38,16 @@ describe("UserImplRepository", () => {
     it("should register user successfully", async () => {
 
       const result = await userRepository.register({
-        email: "test@example.com",
+        email: "test2@example.com",
         password: "password123"
       } as User);
 
       expect(result.isRight()).toBe(true);
-      expect(result.getRight()).toBe(true);
+      expect(result.getRight()).toEqual({
+        id: '2',
+        email: "test2@example.com",
+        password: "password123"
+      } as User);
     });
 
     it("should fail to register if the user already exists", async () => {

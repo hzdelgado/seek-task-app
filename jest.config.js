@@ -6,4 +6,16 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
+  collectCoverage: true,
+  coveragePathIgnorePatterns: [
+    '<rootDir>/node_modules/',
+    '<rootDir>/.next/',
+    '<rootDir>/out/',
+  ],
+  coverageDirectory: 'coverage',
+  collectCoverageFrom: [
+    'application/**/*.{js,jsx,ts,tsx}', 
+    'domain/**/*.{js,jsx,ts,tsx}',
+    'infrastructure/**/*.{js,jsx,ts,tsx}'
+  ],
 };

@@ -20,9 +20,9 @@ export class UserImplRepository implements UserRepository {
     if (existingUser) {
       return Either.left(new Error("User already exists"));
     }
+    user.id = (this.users.length + 1).toString();
     this.users.push(user);
     return Either.right(user);
   }
-
   
 }
