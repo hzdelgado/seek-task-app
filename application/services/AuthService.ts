@@ -5,7 +5,16 @@ import { generateToken } from "@/application/utils/jwtUtils";
 import { Either } from "@/shared/Either";
 
 export class AuthService {
+  private static instance: AuthService;
+
   constructor(private userRepository: UserRepository) {}
+
+  public static getInstance(userRepository: UserRepository): AuthService {
+    if (!AuthService.instance) {
+      AuthService.instance = new AuthService(userRepository);
+    }
+    return AuthService.instance;
+  }
 
   async registerUser(
     email: string,

@@ -1,7 +1,7 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  testEnvironment: "jest-environment-jsdom",
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
@@ -16,6 +16,7 @@ module.exports = {
   collectCoverageFrom: [
     'application/**/*.{js,jsx,ts,tsx}', 
     'domain/**/*.{js,jsx,ts,tsx}',
-    'infrastructure/**/*.{js,jsx,ts,tsx}'
+    'infrastructure/**/*.{js,jsx,ts,tsx}',
+    'components/**/*.{js,jsx,ts,tsx}'
   ],
 };
