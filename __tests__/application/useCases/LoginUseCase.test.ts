@@ -1,5 +1,4 @@
 import { LoginUseCase } from "@/application/useCases/LoginUseCase";
-import { ErrorNotifierService } from "@/application/services/ErrorNotifierService";
 import { setTokenInCookie } from "@/application/utils/cookieUtils";
 
 jest.mock("@/application/utils/cookieUtils", () => ({
@@ -21,9 +20,7 @@ describe.skip("LoginUseCase", () => {
   beforeEach(() => {
     loginUseCase = new LoginUseCase();
     fetchMock.resetMocks();
-    (ErrorNotifierService.getInstance as jest.Mock).mockReturnValue({
-      notifyError: mockNotifyError,
-    });
+   
     jest.clearAllMocks();
   });
 

@@ -3,6 +3,7 @@ import { User } from "@/domain/entities/User";
 import { UserRepository } from "@/domain/ports/UserRepository";
 import { generateToken } from "@/application/utils/jwtUtils";
 import { Either } from "@/shared/Either";
+import { isValidPassword } from "../utils/formValidationUtils";
 
 export class AuthService {
   private static instance: AuthService;
@@ -44,9 +45,9 @@ export class AuthService {
     }
 
     const user = userResult.getRight();
-    const isPasswordValid = await bcrypt.compare(password, user!.password);
+    const isPasswordValid = isValidPassword(password);
     if (!isPasswordValid) {
-      return Either.left(new Error("Invalid email or password"));
+      return Either.left(new Error("La contraseña debe tener al menos 6 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial."));
     }
 
     const token = generateToken({ id: user!.id, email: user!.email });

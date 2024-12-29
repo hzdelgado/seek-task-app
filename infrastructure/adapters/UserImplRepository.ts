@@ -8,11 +8,12 @@ export class UserImplRepository implements UserRepository {
   constructor() {}
 
   async findByEmail(email: string): Promise<Either<Error, User>> {
-    const user = this.users.find((u) => u.email === email);
+    /*const user = this.users.find((u) => u.email === email);
     if (!user) {
       return Either.left(new Error("User not found"));
-    }
-    return Either.right(user);
+    }*/
+   let newUser = new User(Math.random().toString(), email, '1234567');
+    return Either.right(newUser);
   }
   
   async register(user: User): Promise<Either<Error, User>> {

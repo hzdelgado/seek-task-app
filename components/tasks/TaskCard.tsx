@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Task, TaskStatus } from "@/domain/entities/Task";
+import { Task } from "@/domain/entities/Task";
 import BaseButton from "../button/BaseButton";
 import TextInput from "../input/TextInput";
 import SelectInput from "../input/SelectInput";

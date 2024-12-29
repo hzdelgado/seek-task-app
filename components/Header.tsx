@@ -17,7 +17,7 @@ const Header = () => {
 
     return (<div>
       {userName && <div className="bg-white p-4 shadow flex justify-between items-center dark:bg-slate-400">
-        <div className="font-bold text-xl">Bienvenid@, {userName}</div>
+        <div className="font-bold text-xl">Bienvenid@</div>
         <div>
           <button onClick={handleLogout} className="bg-blue-600 text-white px-4 py-2 rounded">Salir</button>
         </div>

@@ -60,7 +60,7 @@ const LoginForm = () => {
               Ingresar
             </button>
           </form>
-          <p className="mt-4 text-center text-sm text-slate-900 dark:text-white">
+          {/* <p className="mt-4 text-center text-sm text-slate-900 dark:text-white">
             ¿No estas registrado?{" "}
             <a
               href="/register"
@@ -68,7 +68,7 @@ const LoginForm = () => {
             >
               Regístrate aquí
             </a>
-          </p>
+          </p> */}
         </div>
     );
   };
