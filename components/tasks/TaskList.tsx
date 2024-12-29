@@ -11,7 +11,7 @@ interface TaskListProps {
 
 const TaskList: React.FC<TaskListProps> = ({ tasks, onEdit, onDelete }) => {
   return (
-    <ul className="space-y-4 h-72 overflow-y-auto">
+    <ul className="space-y-4 h-96 overflow-y-auto">
       {tasks.map((task) => (
         <li
           key={task.id}
