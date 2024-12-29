@@ -17,7 +17,7 @@ export class AuthService {
     return AuthService.instance;
   }
 
-  async registerUser(
+/*async registerUser(
     email: string,
     password: string,
     name?: string
@@ -33,16 +33,13 @@ export class AuthService {
 
     const token = generateToken({ id: user.id, email: user.email });
     return Either.right({ token, user });
-  }
+  }*/
 
   async loginUser(
     email: string,
     password: string
   ): Promise<Either<Error, { token: string; user: User }>> {
     const userResult = await this.userRepository.findByEmail(email);
-    if (userResult.isLeft()) {
-      return Either.left(new Error("User not found"));
-    }
 
     const user = userResult.getRight();
     const isPasswordValid = isValidPassword(password);

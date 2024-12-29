@@ -17,6 +17,8 @@ module.exports = {
     'application/**/*.{js,jsx,ts,tsx}', 
     'domain/**/*.{js,jsx,ts,tsx}',
     'infrastructure/**/*.{js,jsx,ts,tsx}',
-    'components/**/*.{js,jsx,ts,tsx}'
+    'components/**/*.{js,jsx,ts,tsx}',
+    'shared/**/*.{js,jsx,ts,tsx}',
+    'app/api/**/*.{js,jsx,ts,tsx}'
   ],
 };

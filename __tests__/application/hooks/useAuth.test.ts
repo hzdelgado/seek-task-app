@@ -1,7 +1,8 @@
 import { useRouter } from "next/navigation";
 import useAuth from "@/application/hooks/useAuth";
-import { act } from "@testing-library/react";
-import { ErrorNotifierService } from "@/application/services/ErrorNotifierService";
+import { act, renderHook } from "@testing-library/react";
+import { LoginUseCase } from "@/application/useCases/LoginUseCase";
+import { LogoutUseCase } from "@/application/useCases/LogoutUseCase";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
@@ -13,110 +14,92 @@ jest.mock("@/application/useCases/LoginUseCase", () => ({
   })),
 }));
 
-jest.mock("@/application/useCases/RegisterUseCase", () => ({
-  RegisterUseCase: jest.fn().mockImplementation(() => ({
-    execute: jest.fn(),
-  })),
-}));
-
 jest.mock("@/application/useCases/LogoutUseCase", () => ({
   LogoutUseCase: jest.fn().mockImplementation(() => ({
     execute: jest.fn(),
   })),
 }));
 
-jest.mock("@/application/services/ErrorNotifierService", () => ({
-  ErrorNotifierService: {
-    getInstance: jest.fn().mockReturnValue({
-      notifyError: jest.fn(),
-    }),
-  },
-}));
 
-describe.skip("useAuth", () => {
+describe("useAuth", () => {
   let mockRouterPush: jest.Mock;
+  let loginExecuteMock: jest.Mock;
+  let logoutExecuteMock: jest.Mock;
 
   beforeEach(() => {
     mockRouterPush = jest.fn();
     (useRouter as jest.Mock).mockReturnValue({
       push: mockRouterPush,
     });
+    loginExecuteMock = jest.fn();
+    logoutExecuteMock = jest.fn();
+
+    (LoginUseCase as jest.Mock).mockImplementation(() => ({
+      execute: loginExecuteMock,
+    }));
+
+    (LogoutUseCase as jest.Mock).mockImplementation(() => ({
+      execute: logoutExecuteMock,
+    }));
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-
   it("should call LoginUseCase and redirect to /home on successful login", async () => {
-    const mockUser = { email: 'john@example.com', password: "123456" };
-    const { login } = useAuth();
-  
+    const { result } = renderHook(() => useAuth());
+
     await act(async () => {
-      await login(mockUser);
-      
+      await result.current.login({ email: "test@example.com", password: "123456" });
     });
 
-    expect(ErrorNotifierService.getInstance().notifyError).not.toHaveBeenCalled();
+    expect(loginExecuteMock).toHaveBeenCalledWith({
+      email: "test@example.com",
+      password: "123456",
+    });
     expect(mockRouterPush).toHaveBeenCalledWith("/home");
   
   });
   
   it("should handle errors during LoginUseCase failure", async () => {
-    const mockUser = { email: 'john@example.com', password: "123456" };
-    const { login } = useAuth();
-    const mockError = new Error("Login failed");
+    const errorMessage = "Login failed";
+    loginExecuteMock.mockRejectedValueOnce(new Error(errorMessage));
 
-    await act(async () => {
-      await login(mockUser);
-    });
-    expect(ErrorNotifierService.getInstance().notifyError).toHaveBeenCalledWith(mockError);
+    const { result } = renderHook(() => useAuth());
+
+    await expect(
+      act(async () => {
+        await result.current.login({ email: "test@example.com", password: "123456" });
+      })
+    ).rejects.toThrow(errorMessage);
+
     expect(mockRouterPush).not.toHaveBeenCalled();
   });
 
-  it("should call RegisterUseCase and redirect to /home on successful registration", async () => {
-    const mockUser = { email: 'john@example.com', password: "123456", name: "Hillari Z" };
-
-    const { register } = useAuth();
-
-    await act(async () => {
-      await register(mockUser);
-      expect(ErrorNotifierService.getInstance().notifyError).not.toHaveBeenCalled();
-      expect(mockRouterPush).toHaveBeenCalledWith("/home");
-    });
-
-  });
-  
-  it("should handle errors during RegisterUseCase failure", async () => {
-    const mockUser = { email: 'john@example.com', password: "123456", name: "Hillari Z" };
-    const mockError = new Error("Registration failed");
-
-    const { register } = useAuth();
-  
-    await act(async () => {
-      await register(mockUser);
-      expect(ErrorNotifierService.getInstance().notifyError).toHaveBeenCalledWith(mockError);
-      expect(mockRouterPush).not.toHaveBeenCalled();
-    });
-
-  });
   it("should call LogoutUseCase and redirect to /login on successful logout", async () => {
+    const { result } = renderHook(() => useAuth());
 
-    const { logout } = useAuth();
-  
     await act(async () => {
-      await logout();
-      expect(ErrorNotifierService).not.toHaveBeenCalled();
-      expect(mockRouterPush).toHaveBeenCalledWith("/login");
+      await result.current.logout();
     });
 
+    expect(logoutExecuteMock).toHaveBeenCalled();
+    expect(mockRouterPush).toHaveBeenCalledWith("/login");
   });
   
   it("should handle errors during LogoutUseCase failure", async () => {
-    const mockError = new Error("Logout failed");
-    const { logout } = useAuth();
+    const errorMessage = "Logout failed";
+    logoutExecuteMock.mockRejectedValueOnce(new Error(errorMessage));
 
-    await act(async () => {
-      await logout();
-      expect(ErrorNotifierService.getInstance().notifyError).toHaveBeenCalledWith(mockError);
-      expect(mockRouterPush).not.toHaveBeenCalled();
-    });
+    const { result } = renderHook(() => useAuth());
+
+    await expect(
+      act(async () => {
+        await result.current.logout();
+      })
+    ).rejects.toThrow(errorMessage);
+
+    expect(mockRouterPush).not.toHaveBeenCalled();
   });
 });

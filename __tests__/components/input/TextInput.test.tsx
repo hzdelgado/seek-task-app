@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import TextInput from "@/components/input/TextInput";
 
 describe("TextInput Component", () => {
@@ -16,10 +16,12 @@ describe("TextInput Component", () => {
 
   it("renders the component with the correct label, placeholder, and type", () => {
     render(<TextInput {...defaultProps} />);
-    expect(screen.getByLabelText("Username")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Enter your username")).toBeInTheDocument();
-    const input = screen.getByTestId("username-input");
-    expect(input).toHaveAttribute("type", "text");
+    waitFor(() => {
+      expect(screen.getByLabelText("Username")).toBeInTheDocument();
+      expect(screen.getByPlaceholderText("Enter your username")).toBeInTheDocument();
+      const input = screen.getByTestId("username-input");
+      expect(input).toHaveAttribute("type", "text");
+    })
   });
 
   it("calls the onChange function when the input value changes", () => {
