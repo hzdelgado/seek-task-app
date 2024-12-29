@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Proyecto: Sistema de Gestión de Tareas
 
-## Getting Started
+## Descripción
+Aplicación Next 13+ de gestión de tareas que permite ver, crear, actualizar y eliminar tareas. 
 
-First, run the development server:
+## Características
+
+- **Gestión de tareas**: Listar y buscar espacios disponibles según filtros.
+- **JWT**: Autenticación mediante tokens generados con jsonwebtoken.
+- **Redux**: Para manejar el estado global de la aplicación.
+- **Tailwind CSS**: Para estilizar la interfaz de usuario.
+- **Jest**: Para realizar las pruebas unitarias.
+
+## Requisitos
+Antes de iniciar, asegúrate de tener instalado lo siguiente:
+
+- [Node.js](https://nodejs.org/) (versión 16+)
+- [npm](https://www.npmjs.com/)
+
+## Estructura
+
+````/
+    └── app/                 # Directorio principal de la aplicación en Next.js
+    ├── application/         # Capa de aplicación (casos de uso, servicios, hooks)
+    │   ├── hooks/           # Hooks para gestionar la lógica de los casos de uso
+    │   ├── services/        # Servicios para la lógica de la aplicación
+    │   ├── useCases/        # Casos de uso para la lógica de negocio (autenticación)
+    │   ├── utils/           # Funciones utilitarias
+    ├── components/          # Componentes compartidos (componentes UI)
+    ├── domain/              # Capa de dominio (entidades, puertos)
+    ├── infrastructure/      # Capa de infraestructura (implementación de adaptadores de interfaces)
+    │   ├── adapters/        # Implementación de interfaces de los repositorios o servicios
+        │   ├── redux/       # Redux para gestión global del estado
+    └── shared/              # Componentes y módulos compartidos entre capas
+````
+## Instalación
+
+1. **Clona este repositorio**:
+
+   ```bash
+   git clone https://github.com/hzdelgado/seek-task-app.git
+   cd seek-task-app
+   ```
+2. **Instalar dependencias**:
+
+   ```bash
+   npm install
+   ```
+## Despliegue
+#### Modo Desarrollo
+```env
+npm run dev
+```
+#### Modo Producción
+```bash
+npm run build
+npm run start
+```
+La API estará disponible en `http://localhost:3000`.
+
+### Pruebas unitarias con Covertura
+Es necesario tener configurado la propiedad jsx como `react-jsx` en el archivo `tsconfig.json`.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run test:coverage
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
