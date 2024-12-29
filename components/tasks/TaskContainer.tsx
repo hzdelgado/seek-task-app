@@ -23,11 +23,7 @@ const TaskContainer: React.FC = () => {
   );
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [editingTask, setEditingTask] = useState<{
-    id: string;
-    title: string;
-    description: string;
-  } | null>(null);
+
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -39,14 +35,7 @@ const TaskContainer: React.FC = () => {
   };
 
   const handleEditTask = (task: Task) => {
-    setEditingTask(task);
-  };
-
-  const handleUpdateTask = (taskName: TaskStatus) => {
-    if (editingTask) {
-      dispatch(updateTask({ id: editingTask.id, status: taskName }));
-      setEditingTask(null);
-    }
+    //dispatch(updateTask(task));
   };
 
   const handleDeleteTask = (taskId: string) => {

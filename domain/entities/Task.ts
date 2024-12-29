@@ -16,7 +16,7 @@ export class Task {
   @IsString()
   @Length(6, 20)
   public description: string;
-  protected status: TaskStatus = TaskStatus.TODO;
+  public status: TaskStatus = TaskStatus.TODO;
 
   constructor(id: string, title: string, description: string) {
     this.id = id;
@@ -44,7 +44,14 @@ export class Task {
   }
   
   getStatus() {
-    return this.status;
+    switch(this.status) {
+      case TaskStatus.TODO:
+        return 'POR HACER';
+      case TaskStatus.INPROGRESS:
+        return 'EN PROGRESO';
+      case TaskStatus.DONE:
+        return 'HECHO';
+    }
   }
 
   changeStatus(newStatus: TaskStatus): void {
