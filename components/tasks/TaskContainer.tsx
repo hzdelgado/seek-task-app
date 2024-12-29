@@ -6,7 +6,7 @@ import {
   deleteTask,
   updateTask,
 } from "@/infrastructure/adapters/redux/taskSlice";
-import { Task, TaskStatus } from "@/domain/entities/Task";
+import { Task } from "@/domain/entities/Task";
 import { AppDispatch, RootState } from "@/infrastructure/adapters/redux/store";
 import TaskList from "./TaskList";
 import {
@@ -24,7 +24,6 @@ const TaskContainer: React.FC = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-
   useEffect(() => {
     dispatch(fetchTasks());
   }, [dispatch]);
@@ -32,10 +31,12 @@ const TaskContainer: React.FC = () => {
   const handleAddTask = () => {
     const newTask = { title: title, description: description };
     dispatch(addTask(newTask as Task));
+    setTitle('')
+    setDescription('')
   };
 
   const handleEditTask = (task: Task) => {
-    //dispatch(updateTask(task));
+    dispatch(updateTask(task));
   };
 
   const handleDeleteTask = (taskId: string) => {
@@ -63,7 +64,7 @@ const TaskContainer: React.FC = () => {
           onChange={setDescription}
         />
         <BaseButton
-          onClick={() => handleAddTask}
+          onClick={() => handleAddTask()}
         >
           Agregar
         </BaseButton>

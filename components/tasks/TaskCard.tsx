@@ -19,14 +19,23 @@ const options = [
 
 const TaskCard: React.FC<TaskCardProps> = ({ task, onDelete, onEdit }) => {
   const [editMode, setEditMode] = useState(false);
+  const [selectedDescription, setSelectedDescription] = useState(task.description);
+  const [selectedTitle, setSelectedTitle] = useState(task.title);
   const [selectedStatus, setSelectedStatus] = useState(task.status as string);
   const [taskObject, setTaskObject] = useState(plainToInstance(Task, task));
 
   useEffect(() => {
     setTaskObject(plainToInstance(Task, task))
     setSelectedStatus(task.status)
+    setSelectedTitle(task.title)
+    setSelectedDescription(task.description)
   }, [task]);
 
+  const handleTaskEdit = () => {
+    const newTask = plainToInstance(Task, {...taskObject, title: selectedTitle, description: selectedDescription, status: selectedStatus})
+    onEdit(newTask)
+    setTimeout(() => setEditMode(false), 1000)
+  } 
   
   return !editMode ? (
     <div className="flex flex-wrap w-full gap-y-4">
@@ -55,16 +64,16 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onDelete, onEdit }) => {
           <TextInput
             type="text"
             placeholder="Edita el titulo"
-            value={taskObject.title}
+            value={selectedTitle}
             testId={"title" + taskObject.id}
-            onChange={() => {}}
+            onChange={setSelectedTitle}
           />
           <TextInput
             type="text"
             placeholder="Edita la descripción"
-            value={taskObject.description}
+            value={selectedDescription}
             testId={"description" + taskObject.id}
-            onChange={() => {}}
+            onChange={setSelectedDescription}
           />
           <SelectInput
             testId="select-input"
@@ -74,7 +83,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onDelete, onEdit }) => {
           />
         </div>
         <div className="flex gap-x-4 w-full">
-          <BaseButton onClick={() => onEdit(taskObject)}>Guardar</BaseButton>
+          <BaseButton onClick={() => handleTaskEdit()}>Guardar</BaseButton>
           <BaseButton isOutline={true} onClick={() => setEditMode(false)}>
             Cancelar
           </BaseButton>

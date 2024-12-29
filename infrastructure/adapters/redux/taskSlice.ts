@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Task, TaskStatus } from '@/domain/entities/Task';
+import { Task } from '@/domain/entities/Task';
 import { addTask, fetchTasks } from './taskThunks';
 
 interface TaskState {
@@ -18,13 +18,20 @@ const taskSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    updateTask(state, action: PayloadAction<{ id: string; status: TaskStatus }>) {
-        const task = state.tasks.find((t) => t.id === action.payload.id);
-        
-        if (task) {
-          (task as Task).changeStatus(action.payload.status);
-        }
-      },
+    updateTask(state, action: PayloadAction<Task>) {
+      const taskIndex = state.tasks.findIndex((t) => t.id === action.payload.id);
+  
+      if (taskIndex !== -1) {
+        const updatedTask = {
+          id: action.payload.id,
+          title: action.payload.title,
+          description: action.payload.description,
+          status: action.payload.status,
+        };
+
+        state.tasks[taskIndex] = updatedTask as Task;
+      }
+    },
     deleteTask(state, action: PayloadAction<string>) {
       state.tasks = state.tasks.filter((t) => t.id !== action.payload);
     },
@@ -43,9 +50,14 @@ const taskSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Error fetching tasks';
       })
-      .addCase(addTask.fulfilled, (state, action: PayloadAction<Omit<Task, 'id'>>) => {
-        let newTask = action.payload as Task;
-        state.tasks.push(newTask);
+      .addCase(addTask.fulfilled, (state, action: PayloadAction<Task>) => {
+        const taskData = {
+          id: action.payload.id,
+          title: action.payload.title,
+          description: action.payload.description,
+          status: action.payload.status,
+        };
+        state.tasks.push(taskData as Task);
       })
       .addCase(addTask.rejected, (state, action) => {
         state.error = action.error.message || 'Error fetching tasks';
