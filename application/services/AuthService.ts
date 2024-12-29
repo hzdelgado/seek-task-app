@@ -40,7 +40,7 @@ export class AuthService {
   ): Promise<Either<Error, { token: string; user: User }>> {
     const userResult = await this.userRepository.findByEmail(email);
     if (userResult.isLeft()) {
-      return Either.left(new Error("Invalid email or password"));
+      return Either.left(new Error("User not found"));
     }
 
     const user = userResult.getRight();

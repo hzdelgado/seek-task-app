@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import { ErrorNotifierService } from "@/application/services/ErrorNotifierService";
 
 export class LogoutUseCase {
   public constructor() {}
@@ -10,7 +9,8 @@ export class LogoutUseCase {
     });
 
     if (!response.ok) {
-      ErrorNotifierService.getInstance().notifyError(new Error("Logout failed"));
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error during logout");
     }
 
     Cookies.remove("auth_token", { path: "/" });

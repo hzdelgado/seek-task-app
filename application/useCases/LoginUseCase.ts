@@ -1,10 +1,11 @@
 import { setTokenInCookie } from "@/application/utils/cookieUtils";
-import { ErrorNotifierService } from "@/application/services/ErrorNotifierService";
+import { Either } from "@/shared/Either";
 
 export class LoginUseCase {
   public constructor() {}
 
   async execute(userData: any): Promise<void> {
+
     const response = await fetch("/api/login", {
       method: "POST",
       headers: {
@@ -12,9 +13,9 @@ export class LoginUseCase {
       },
       body: JSON.stringify(userData),
     });
-
     if (!response.ok) {
-      ErrorNotifierService.getInstance().notifyError(new Error("Login failed"));
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error during login");
     }
 
     const { token, user } = await response.json();
@@ -23,6 +24,6 @@ export class LoginUseCase {
     localStorage.setItem("userName", name);
     localStorage.setItem("token", token);
 
-    setTokenInCookie(token);
+    setTokenInCookie(token);  
   }
 }

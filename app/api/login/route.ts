@@ -13,7 +13,8 @@ export async function POST(req: NextRequest) {
       if (result.isRight()) {
         return NextResponse.json(result.getRight(), { status: 200 });
       } else {
-        return NextResponse.json(result.getLeft(), { status: 401 });
+        const errorResponse = { message: result.getLeft()?.message };
+        return NextResponse.json(errorResponse, { status: 401 });
       }
     } catch (error) {
       return NextResponse.json({ message: "Error during login", error }, { status: 500 });

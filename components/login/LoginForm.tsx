@@ -20,9 +20,9 @@ const LoginForm = () => {
       showLoader();
       try {
         await login({ email, password});
-      } catch (error: unknown) {  // Usar "unknown" en lugar de "any"
+      } catch (error: unknown) { 
         if (error instanceof Error) {
-          setError(error.message);  // Asegurarse de que el error es una instancia de Error
+          setError(error.message);
         } else {
           setError("Un error desconocido ocurrió");
         }

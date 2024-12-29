@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import OverlayLoader from "@/components/loader/OverlayLoader";
 import { LoaderProvider } from "@/application/context/LoaderContext";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,7 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LoaderProvider>
+          <LoaderProvider>
             <OverlayLoader />
             {children}
           </LoaderProvider>

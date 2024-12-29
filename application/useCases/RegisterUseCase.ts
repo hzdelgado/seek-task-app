@@ -1,5 +1,4 @@
 import { setTokenInCookie } from "@/application/utils/cookieUtils";
-import { ErrorNotifierService } from "@/application/services/ErrorNotifierService";
 
 export class RegisterUseCase {
   public constructor() {}
@@ -14,7 +13,8 @@ export class RegisterUseCase {
       });
   
       if (!response.ok) {
-        ErrorNotifierService.getInstance().notifyError(new Error("Registration failed"))
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error during register");
       }
   
       const { token, user } = await response.json();

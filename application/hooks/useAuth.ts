@@ -2,7 +2,6 @@ import { useRouter } from "next/navigation";
 import { LoginUseCase } from "@/application/useCases/LoginUseCase";
 import { RegisterUseCase } from "@/application/useCases/RegisterUseCase";
 import { LogoutUseCase } from "@/application/useCases/LogoutUseCase";
-import { ErrorNotifierService } from "@/application//services/ErrorNotifierService";
 
 type UseAuthHook = {
   login: (userData: any) => Promise<void>;
@@ -21,7 +20,7 @@ const useAuth = (): UseAuthHook => {
       await loginUseCase.execute(userData);
       router.push("/home");
     } catch (error: any) {
-      ErrorNotifierService.getInstance().notifyError(new Error(error.message));
+      throw new Error(error.message || "Error during login");
     }
   };
 
@@ -30,7 +29,7 @@ const useAuth = (): UseAuthHook => {
       await registerUseCase.execute(userData);
       router.push("/home");
     } catch (error: any) {
-      ErrorNotifierService.getInstance().notifyError(new Error(error.message));
+      throw new Error(error.message || "Error during registration");
     }
   };
 
@@ -39,7 +38,7 @@ const useAuth = (): UseAuthHook => {
       await logoutUseCase.execute();
       router.push("/login");
     } catch (error: any) {
-      ErrorNotifierService.getInstance().notifyError(new Error(error.message));
+      throw new Error(error.message || "Error during logout");
     }
   };
 

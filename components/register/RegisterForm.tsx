@@ -26,19 +26,21 @@ const RegisterForm = () => {
       setError(
         "La contraseña debe tener al menos 6 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial."
       );
+      hideLoader();
       return;
     }
 
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden");
+      hideLoader();
       return;
     }
 
     try {
       await register({ name, email, password })
-    } catch (error: unknown) {  // Usar "unknown" en lugar de "any"
+    } catch (error: unknown) {  
       if (error instanceof Error) {
-        setError(error.message);  // Asegurarse de que el error es una instancia de Error
+        setError(error.message);
       } else {
         setError("Un error desconocido ocurrió");
       }
