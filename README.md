@@ -10,7 +10,7 @@ Puedes ver la demo de la aplicación en el siguiente enlace:
 
 ## Características
 
-- **Gestión de tareas**: Listar y buscar espacios disponibles según filtros.
+- **Gestión de tareas**: operaciones CRUD de tareas.
 - **JWT**: Autenticación mediante tokens generados con jsonwebtoken.
 - **Redux**: Para manejar el estado global de la aplicación.
 - **Tailwind CSS**: Para estilizar la interfaz de usuario.
