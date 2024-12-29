@@ -22,6 +22,9 @@ Antes de iniciar, asegúrate de tener instalado lo siguiente:
 - [Node.js](https://nodejs.org/) (versión 16+)
 - [npm](https://www.npmjs.com/)
 
+## Recomendaciones
+Para una experiencia de desarrollo óptima, se recomienda usar [Visual Studio Code](https://code.visualstudio.com/).
+
 ## Estructura
 
 ````/
