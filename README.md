@@ -6,7 +6,7 @@ Aplicación Next 13+ de gestión de tareas que permite ver, crear, actualizar y 
 ## Demo
 Puedes ver la demo de la aplicación en el siguiente enlace:
 
-[Ver la Demo](https://tu-enlace-de-demo.com](https://seek-task-owhi4lsqr-hzdelgados-projects.vercel.app/login/ )
+[Ver la Demo](https://seek-task-owhi4lsqr-hzdelgados-projects.vercel.app/)
 
 ## Características
 
