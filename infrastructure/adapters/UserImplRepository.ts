@@ -7,6 +7,11 @@ export class UserImplRepository implements UserRepository {
 
   constructor() {}
 
+  /**
+   * Encuentra un usuario por su correo electrónico. El método esta seteado para siempre devolver una respuesta exitosa.
+   * @param email - El correo electrónico del usuario a buscar.
+   * @returns {Promise<Either<Error, User>>} - Un objeto Either que contiene el usuario si se encuentra, o un error si no se encuentra.
+   */
   async findByEmail(email: string): Promise<Either<Error, User>> {
    let newUser = new User('1', email, 'password123');
     return Either.right(newUser);
