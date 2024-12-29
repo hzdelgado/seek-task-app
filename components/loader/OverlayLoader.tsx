@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useLoader } from "@/application/context/LoaderContext";
 

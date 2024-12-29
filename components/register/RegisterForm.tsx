@@ -1,11 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLoader } from "@/application/context/LoaderContext";
 import dynamic from 'next/dynamic';
 import React from "react";
 import { isValidPassword } from "@/application/utils/formValidationUtils";
-import { AuthService } from "@/application/services/AuthService";
-import { UserImplRepository } from "@/infrastructure/adapters/UserImplRepository";
 import useAuth from "@/application/hooks/useAuth";
 const TextInput = dynamic(() => import("../input/TextInput"), { ssr: false });
 const PasswordInput = dynamic(() => import("../input/PasswordInput"), { ssr: false });
@@ -38,8 +36,12 @@ const RegisterForm = () => {
 
     try {
       await register({ name, email, password })
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {  // Usar "unknown" en lugar de "any"
+      if (error instanceof Error) {
+        setError(error.message);  // Asegurarse de que el error es una instancia de Error
+      } else {
+        setError("Un error desconocido ocurrió");
+      }
     } finally {
       hideLoader();
     }
