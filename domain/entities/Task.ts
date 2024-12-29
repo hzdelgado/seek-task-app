@@ -12,10 +12,10 @@ export class Task {
   public id: string;
   @IsString()
   @IsNotEmpty()
-  protected title: string;
+  public title: string;
   @IsString()
   @Length(6, 20)
-  protected description: string;
+  public description: string;
   protected status: TaskStatus = TaskStatus.TODO;
 
   constructor(id: string, title: string, description: string) {

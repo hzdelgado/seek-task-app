@@ -22,7 +22,7 @@ const taskSlice = createSlice({
         const task = state.tasks.find((t) => t.id === action.payload.id);
         
         if (task) {
-          task.changeStatus(action.payload.status);
+          (task as Task).changeStatus(action.payload.status);
         }
       },
     deleteTask(state, action: PayloadAction<string>) {
@@ -43,12 +43,12 @@ const taskSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Error fetching tasks';
       })
-      .addCase(addTask.fulfilled, (state, action: PayloadAction<Task | undefined>) => {
+      .addCase(addTask.fulfilled, (state, action: PayloadAction<Omit<Task, 'id'>>) => {
         let newTask = action.payload as Task;
         state.tasks.push(newTask);
       })
       .addCase(addTask.rejected, (state, action) => {
-        console.error(action.payload);
+        state.error = action.error.message || 'Error fetching tasks';
       });
   },
 });

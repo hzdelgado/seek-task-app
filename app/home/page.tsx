@@ -1,12 +1,18 @@
 "use client";
 
-const LoginPage = () => {
+import Header from "@/components/Header";
+import TaskContainer from "@/components/tasks/TaskContainer";
+
+const HomePage = () => {
 
   return (
-    <div className="flex flex-col gap-y-5 items-center justify-center min-h-screen bg-gray-100 dark:bg-slate-500">
-      Hola, soy Home
+    <div className="flex h-screen">
+      <div className="flex flex-col flex-1 bg-gray-100 dark:bg-slate-600">
+        <Header />
+        <TaskContainer/>
+      </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default HomePage;

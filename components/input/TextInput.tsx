@@ -1,7 +1,7 @@
 import React from "react";
 
 interface TextInputProps {
-  label: string;
+  label?: string;
   type: string;
   testId: string;
   placeholder: string;
@@ -18,13 +18,13 @@ const TextInput = ({
   onChange,
 }: TextInputProps) => {
   return (
-    <div className="mb-4">
-      <label
+    <div className="mb-4 w-full">
+      {label && <label
         htmlFor={label}
         className="block text-sm font-medium text-gray-900 dark:text-white"
       >
         {label}
-      </label>
+      </label>}
       <input
         type={type}
         data-testid={testId}
