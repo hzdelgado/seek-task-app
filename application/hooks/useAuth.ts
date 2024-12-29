@@ -1,18 +1,16 @@
 import { useRouter } from "next/navigation";
 import { LoginUseCase } from "@/application/useCases/LoginUseCase";
-import { RegisterUseCase } from "@/application/useCases/RegisterUseCase";
 import { LogoutUseCase } from "@/application/useCases/LogoutUseCase";
 
 type UseAuthHook = {
   login: (userData: any) => Promise<void>;
-  register: (userData: any) => Promise<void>;
+  //register: (userData: any) => Promise<void>;
   logout: () => Promise<void>;
 };
 
 const useAuth = (): UseAuthHook => {
   const router = useRouter();
   const loginUseCase = new LoginUseCase();
-  const registerUseCase = new RegisterUseCase();
   const logoutUseCase = new LogoutUseCase();
 
   const login = async (userData: any): Promise<void> => {
@@ -23,7 +21,7 @@ const useAuth = (): UseAuthHook => {
       throw new Error(error.message || "Error during login");
     }
   };
-
+/*
   const register = async (userData: any): Promise<void> => {
     try {
       await registerUseCase.execute(userData);
@@ -32,7 +30,7 @@ const useAuth = (): UseAuthHook => {
       throw new Error(error.message || "Error during registration");
     }
   };
-
+*/
   const logout = async (): Promise<void> => {
     try {
       await logoutUseCase.execute();
@@ -42,7 +40,7 @@ const useAuth = (): UseAuthHook => {
     }
   };
 
-  return { login, logout, register };
+  return { login, logout };
 };
 
 export default useAuth;

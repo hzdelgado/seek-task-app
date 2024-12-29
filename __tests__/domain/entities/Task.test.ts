@@ -8,7 +8,7 @@ describe('Task Entity', () => {
     
         const errors = await validate(task);
         expect(errors.length).toBe(0);
-        expect(task.getStatus()).toBe(TaskStatus.TODO)
+        expect(task.getStatus()).toBe('POR HACER')
       });
     
       it('should throw error when description is empty', async () => {
@@ -67,7 +67,7 @@ describe('Task Entity', () => {
         it("should return the current status of the task", () => {
           const task = new Task("1", "Sample Title", "Sample description");
     
-          expect(task.getStatus()).toBe(TaskStatus.TODO);
+          expect(task.getStatus()).toBe('POR HACER');
         });
       });
     
@@ -76,7 +76,7 @@ describe('Task Entity', () => {
           const task = new Task("1", "Sample Title", "Sample description");
     
           task.changeStatus(TaskStatus.INPROGRESS);
-          expect(task.getStatus()).toBe(TaskStatus.INPROGRESS);
+          expect(task.getStatus()).toBe('EN PROGRESO');
         });
     
         it("should throw an error if attempting to change the status of a DONE task", () => {

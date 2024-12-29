@@ -1,5 +1,4 @@
 import { setTokenInCookie } from "@/application/utils/cookieUtils";
-import { Either } from "@/shared/Either";
 
 export class LoginUseCase {
   public constructor() {}

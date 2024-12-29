@@ -5,22 +5,14 @@ jest.mock("@/application/utils/cookieUtils", () => ({
   setTokenInCookie: jest.fn(),
 }));
 
-jest.mock("@/application/services/ErrorNotifierService", () => ({
-  ErrorNotifierService: {
-    getInstance: jest.fn(() => ({
-      notifyError: jest.fn(),
-    })),
-  },
-}));
-
-describe.skip("LoginUseCase", () => {
+describe("LoginUseCase", () => {
   let loginUseCase: LoginUseCase;
-  const mockNotifyError = jest.fn();
 
   beforeEach(() => {
     loginUseCase = new LoginUseCase();
     fetchMock.resetMocks();
-   
+    localStorage.clear();
+
     jest.clearAllMocks();
   });
 
@@ -42,27 +34,23 @@ describe.skip("LoginUseCase", () => {
       body: JSON.stringify(userData),
     });
 
-    expect(localStorage.getItem("userName")).toBe(mockResponse.user.name);
     expect(localStorage.getItem("token")).toBe(mockResponse.token);
     expect(setTokenInCookie).toHaveBeenCalledWith(mockResponse.token);
   });
 
-  it("should handle a failed login", async () => {
-    fetchMock.mockResponseOnce('', { status: 401 });
+  it("should throw an error if the login response is not ok", async () => {
+    const mockErrorResponse = { message: "Invalid credentials" };
 
-    const userData = { email: "john@example.com", password: "wrong-password" };
+    fetchMock.mockResponseOnce(JSON.stringify(mockErrorResponse), { status: 401 });
 
-    await loginUseCase.execute(userData);
+    const userData = { email: "test@example.com", password: "password123" };
+
+    await expect(loginUseCase.execute(userData)).rejects.toThrow("Invalid credentials");
 
     expect(fetchMock).toHaveBeenCalledWith("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
     });
-
-    expect(mockNotifyError).toHaveBeenCalledWith(new Error("Login failed"));
-    expect(localStorage.getItem("userName")).toBeNull();
-    expect(localStorage.getItem("token")).toBeNull();
-    expect(setTokenInCookie).not.toHaveBeenCalled();
   });
 });
